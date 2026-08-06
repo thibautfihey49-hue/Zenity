@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zenity Home</title>
+<style>
+body { font-family: system-ui, -apple-system, sans-serif; background:#121212; color:#e0e0e0; padding:20px; margin:0; }
+h1 { color:#00eaff; font-size:1.6rem; margin-bottom:8px; }
+h2 { color:#00eaff; font-size:1.1rem; margin:0 0 10px 0; }
+a { color:#00eaff; text-decoration:none; }
+a:active { opacity:0.7; }
+.card { background:#1e1e1e; padding:16px; margin-top:14px; border-radius:12px; box-shadow:0 2px 8px rgba(0,0,0,0.3); }
+ul { list-style:none; padding:0; margin:0; }
+li { padding:8px 0; border-bottom:1px solid #2a2a2a; }
+li:last-child { border-bottom:none; }
+.empty { color:#666; font-style:italic; }
+.hint { color:#888; font-size:0.85rem; margin-top:4px; }
+</style>
+</head>
+<body>
+<h1>Zenity</h1>
+<p class="hint">Navigateur • Ghost • Turbo • Ultra • Quantum</p>
+
+<div class="card">
+<h2>⭐ Favoris</h2>
+<ul id="fav"><li class="empty">Aucun favori pour le moment</li></ul>
+</div>
+
+<div class="card">
+<h2>🕐 Historique</h2>
+<ul id="hist"><li class="empty">Aucun historique</li></ul>
+</div>
+
+<script>
+function loadList(id, key) {
+  try {
+    var raw = localStorage.getItem(key);
+    if (!raw) return;
+    var data = JSON.parse(raw);
+    if (!Array.isArray(data) || data.length === 0) return;
+    var el = document.getElementById(id);
+    el.innerHTML = '';
+    data.slice().reverse().slice(0, 30).forEach(function(item) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = item.url || '#';
+      a.textContent = item.title || item.url || 'Lien';
+      li.appendChild(a);
+      el.appendChild(li);
+    });
+  } catch (e) {}
+}
+loadList('fav', 'zenity_favorites');
+loadList('hist', 'zenity_history');
+</script>
+</body>
+</html>
